@@ -1,5 +1,6 @@
 package com.terra.food.customers.model
 
+import com.terra.food.customers.enums.CustomerStatus
 import javax.persistence.*
 
 @Entity(name = "customer")
@@ -11,5 +12,8 @@ data class CustomerModel(
     @Column
     var name: String,
     @Column
-    var email: String
+    var email: String,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: CustomerStatus
 )

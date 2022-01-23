@@ -1,12 +1,14 @@
 package com.terra.food.customers.service
 
+import com.terra.food.customers.enums.CustomerStatus
 import com.terra.food.customers.model.CustomerModel
 import com.terra.food.customers.repository.CustomerRepository
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
-    val customerRepository: CustomerRepository
+    val customerRepository: CustomerRepository,
+    val productService: ProductService
 
 ) {
 
@@ -21,7 +23,7 @@ class CustomerService(
         customerRepository.save(customer)
     }
 
-    fun getCustomer(id: Int): CustomerModel {
+    fun findById(id: Int): CustomerModel {
         return customerRepository.findById(id).orElseThrow()
     }
 
@@ -33,10 +35,12 @@ class CustomerService(
     }
 
     fun delete(id: Int) {
-        if (!customerRepository.existsById(id)) {
-            throw Exception()
-        }
-        customerRepository.deleteById(id)
+        val customer = findById(id)
+        productService.deleteByCustomer(customer)
+
+        customer.status = CustomerStatus.INATIVO
+
+        customerRepository.save(customer)
     }
 
 }
