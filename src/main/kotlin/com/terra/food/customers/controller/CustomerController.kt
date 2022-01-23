@@ -8,6 +8,7 @@ import com.terra.food.customers.extension.toResponse
 import com.terra.food.customers.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("customer")
@@ -22,7 +23,7 @@ class CustomerController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody request: PostCustomerRequest) {
+    fun create(@RequestBody @Valid request: PostCustomerRequest) {
         return customerService.create(request.toCustomerModel())
     }
 
@@ -33,7 +34,7 @@ class CustomerController(
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun update(@PathVariable id: Int, @RequestBody request: PutCustomerRequest) {
+    fun update(@PathVariable id: Int, @RequestBody @Valid request: PutCustomerRequest) {
         val customerSaved = customerService.findById(id)
         customerService.update(request.toCustomerModel(customerSaved))
     }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("product")
@@ -22,7 +23,7 @@ class ProductController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody request: PostProductRequest) {
+    fun create(@RequestBody @Valid request: PostProductRequest) {
         val customer = customerService.findById(request.customerId)
 
         return productService.create(request.toProductModel(customer))

@@ -1,6 +1,8 @@
 package com.terra.food.customers.service
 
 import com.terra.food.customers.enums.CustomerStatus
+import com.terra.food.customers.enums.Errors
+import com.terra.food.customers.exception.NotFoundException
 import com.terra.food.customers.model.CustomerModel
 import com.terra.food.customers.repository.CustomerRepository
 import org.springframework.stereotype.Service
@@ -24,7 +26,7 @@ class CustomerService(
     }
 
     fun findById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow()
+        return customerRepository.findById(id).orElseThrow { NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
     }
 
     fun update(customer: CustomerModel) {
@@ -41,6 +43,10 @@ class CustomerService(
         customer.status = CustomerStatus.INATIVO
 
         customerRepository.save(customer)
+    }
+
+    fun emailAvailable(email: String): Boolean {
+        return !customerRepository.existsByEmail(email)
     }
 
 }

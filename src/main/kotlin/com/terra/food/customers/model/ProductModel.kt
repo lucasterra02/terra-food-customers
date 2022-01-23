@@ -1,6 +1,8 @@
 package com.terra.food.customers.model
 
+import com.terra.food.customers.enums.Errors
 import com.terra.food.customers.enums.ProductStatus
+import com.terra.food.customers.exception.BadRequestException
 import java.math.BigDecimal
 import javax.persistence.*
 
@@ -27,7 +29,7 @@ data class ProductModel(
     var status: ProductStatus? = null
         set(value) {
             if (field == ProductStatus.CANCELADO || field == ProductStatus.DELETADO) {
-                throw Exception("Não é possível alterar um livro com status ${field!!.name}")
+                throw BadRequestException(Errors.ML102.message.format(field), Errors.ML102.code)
             }
             field = value
         }
