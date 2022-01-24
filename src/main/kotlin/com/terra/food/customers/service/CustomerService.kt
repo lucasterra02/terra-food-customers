@@ -2,15 +2,18 @@ package com.terra.food.customers.service
 
 import com.terra.food.customers.enums.CustomerStatus
 import com.terra.food.customers.enums.Errors
+import com.terra.food.customers.enums.Role
 import com.terra.food.customers.exception.NotFoundException
 import com.terra.food.customers.model.CustomerModel
 import com.terra.food.customers.repository.CustomerRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
-    val customerRepository: CustomerRepository,
-    val productService: ProductService
+    private val customerRepository: CustomerRepository,
+    private val productService: ProductService,
+    private val bCrypt: BCryptPasswordEncoder
 
 ) {
 
@@ -22,11 +25,18 @@ class CustomerService(
     }
 
     fun create(customer: CustomerModel) {
-        customerRepository.save(customer)
+
+        val customerCopy = customer.copy(
+            roles = setOf(Role.CUSTOMER),
+            password = bCrypt.encode(customer.password)
+        )
+
+        customerRepository.save(customerCopy)
     }
 
     fun findById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow { NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
+        return customerRepository.findById(id)
+            .orElseThrow { NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
     }
 
     fun update(customer: CustomerModel) {

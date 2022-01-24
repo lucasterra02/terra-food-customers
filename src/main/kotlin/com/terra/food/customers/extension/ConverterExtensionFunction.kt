@@ -12,7 +12,7 @@ import com.terra.food.customers.model.CustomerModel
 import com.terra.food.customers.model.ProductModel
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel {
-    return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO)
+    return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO, password = this.password)
 }
 
 fun PostProductRequest.toProductModel(customer: CustomerModel): ProductModel {
@@ -20,7 +20,13 @@ fun PostProductRequest.toProductModel(customer: CustomerModel): ProductModel {
 }
 
 fun PutCustomerRequest.toCustomerModel(previousValue: CustomerModel): CustomerModel {
-    return CustomerModel(id = previousValue.id, name = this.name, email = this.email, status = previousValue.status)
+    return CustomerModel(
+        id = previousValue.id,
+        name = this.name,
+        email = this.email,
+        status = previousValue.status,
+        password = previousValue.password
+    )
 }
 
 fun PutProductRequest.toProductModel(previousValue: ProductModel): ProductModel {

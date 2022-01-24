@@ -5,8 +5,10 @@ import com.terra.food.customers.controller.request.PutCustomerRequest
 import com.terra.food.customers.controller.response.CustomerResponse
 import com.terra.food.customers.extension.toCustomerModel
 import com.terra.food.customers.extension.toResponse
+import com.terra.food.customers.security.UserCanOnlyAccessTheirOwnResource
 import com.terra.food.customers.service.CustomerService
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -28,6 +30,7 @@ class CustomerController(
     }
 
     @GetMapping("/{id}")
+    @UserCanOnlyAccessTheirOwnResource
     fun getCustomer(@PathVariable id: Int): CustomerResponse {
         return customerService.findById(id).toResponse()
     }

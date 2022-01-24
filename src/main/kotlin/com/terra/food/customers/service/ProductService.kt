@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductService(
-    val productRepository: ProductRepository
+    private val productRepository: ProductRepository
 ) {
     fun create(product: ProductModel) {
         productRepository.save(product)
