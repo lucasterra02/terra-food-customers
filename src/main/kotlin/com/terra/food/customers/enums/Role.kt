@@ -3,6 +3,6 @@ package com.terra.food.customers.enums
 enum class Role(
     val description: String
 ) {
-    ADMIN("ROLE_ADMIN"),
-    CUSTOMER("ROLE_CUSTOMER")
+    ROLE_ADMIN("ROLE_ADMIN"),
+    ROLE_CUSTOMER("ROLE_CUSTOMER")
 }

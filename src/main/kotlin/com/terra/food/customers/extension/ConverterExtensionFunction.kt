@@ -5,11 +5,13 @@ import com.terra.food.customers.controller.request.PostProductRequest
 import com.terra.food.customers.controller.request.PutCustomerRequest
 import com.terra.food.customers.controller.request.PutProductRequest
 import com.terra.food.customers.controller.response.CustomerResponse
+import com.terra.food.customers.controller.response.PageResponse
 import com.terra.food.customers.controller.response.ProductResponse
 import com.terra.food.customers.enums.CustomerStatus
 import com.terra.food.customers.enums.ProductStatus
 import com.terra.food.customers.model.CustomerModel
 import com.terra.food.customers.model.ProductModel
+import org.springframework.data.domain.Page
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel {
     return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO, password = this.password)
@@ -56,5 +58,11 @@ fun ProductModel.toResponse(): ProductResponse {
         price = this.price,
         customer = this.customer,
         status = this.status
+    )
+}
+
+fun <T> Page<T>.toPageResponse(): PageResponse<T> {
+    return PageResponse(
+        this.content, this.number, this.totalElements, this.totalPages
     )
 }

@@ -2,7 +2,9 @@ package com.terra.food.customers.controller
 
 import com.terra.food.customers.controller.request.PostProductRequest
 import com.terra.food.customers.controller.request.PutProductRequest
+import com.terra.food.customers.controller.response.PageResponse
 import com.terra.food.customers.controller.response.ProductResponse
+import com.terra.food.customers.extension.toPageResponse
 import com.terra.food.customers.extension.toProductModel
 import com.terra.food.customers.extension.toResponse
 import com.terra.food.customers.service.CustomerService
@@ -15,10 +17,10 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("products")
 class ProductController(
-    val productService: ProductService,
-    val customerService: CustomerService
+    private val productService: ProductService,
+    private val customerService: CustomerService
 ) {
 
     @PostMapping
@@ -30,8 +32,8 @@ class ProductController(
     }
 
     @GetMapping
-    fun findAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<ProductResponse> =
-        productService.findAll(pageable).map { it.toResponse() }
+    fun findAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<ProductResponse> =
+        productService.findAll(pageable).map { it.toResponse() }.toPageResponse()
 
     @GetMapping("/active")
     fun findActives(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<ProductResponse> = productService.findActives(pageable).map { it.toResponse() }
