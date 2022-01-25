@@ -30,7 +30,7 @@
 2.1 - Será gerado um `Bearer token` no Header de Resposta
       utilizar este token para chamar os recursos autenticados:
           
- Exemplo:
+ - Exemplo de CURL, passando Authorization com token:
 ```
           curl --location --request GET 'localhost:8080/customers' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzUdas124iOiIxMSIsImVasMTY0MzE1MDk5Mn0.YiEpEiT3D2kZgp6Xs_EjOaJBvOk-8XFAnXmnvA_XAvQl0TDXc1Oaas4DfinPKNdxMs123G97vSDFWUVAw97tw'
